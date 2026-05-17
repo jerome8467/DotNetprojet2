@@ -49,9 +49,13 @@ namespace P2FixAnAppDotNetCode
                     new CultureInfo("en"),
                     new CultureInfo("fr-FR"),
                     new CultureInfo("fr"),
+                    // Ajout de l'espagnol
+                    new CultureInfo("es-ES"),
+                    new CultureInfo("es")
                 };
 
-                opts.DefaultRequestCulture = new RequestCulture("en");
+                //Change default "en" -> "en-GB" pour le symbole monétaire
+                opts.DefaultRequestCulture = new RequestCulture("en-GB");
                 // Formatting numbers, dates, etc.
                 opts.SupportedCultures = supportedCultures;
                 // UI strings that we have localized.

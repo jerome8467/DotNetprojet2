@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using P2FixAnAppDotNetCode.Models.Services;
+using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace P2FixAnAppDotNetCode.Models
 {
@@ -8,6 +10,10 @@ namespace P2FixAnAppDotNetCode.Models
     /// </summary>
     public class Cart : ICart
     {
+        //Nouveau code : ajout d'une liste permanente
+        private List<CartLine> _cardLines = new List<CartLine>();
+        private int LineId =  0;
+
         /// <summary>
         /// Read-only property for display only
         /// </summary>
@@ -17,9 +23,11 @@ namespace P2FixAnAppDotNetCode.Models
         /// Return the actual cartline list
         /// </summary>
         /// <returns></returns>
-        private List<CartLine> GetCartLineList()
+        /*private*/ public List<CartLine> GetCartLineList()
         {
-            return new List<CartLine>();
+            //Ancien code
+            //return new List<CartLine>();
+            return _cardLines;
         }
 
         /// <summary>
@@ -28,6 +36,27 @@ namespace P2FixAnAppDotNetCode.Models
         public void AddItem(Product product, int quantity)
         {
             // TODO implement the method
+            if (FindProductInCartLines(product.Id) == null)
+                {
+                    GetCartLineList().Add(new CartLine
+                    {
+                        OrderLineId = ++LineId,
+                        Product = product,
+                        Quantity = quantity
+                    });
+                }
+                else
+                {
+                    foreach (CartLine line in _cardLines)
+                    {
+                        if (line.Product.Id == product.Id)
+                        {
+                            line.Quantity += quantity;
+                        }
+                    }
+                }
+            
+  
         }
 
         /// <summary>
@@ -42,7 +71,14 @@ namespace P2FixAnAppDotNetCode.Models
         public double GetTotalValue()
         {
             // TODO implement the method
-            return 0.0;
+            double total = 0;
+            foreach (CartLine line in _cardLines) 
+            {
+                total += (line.Product.Price * line.Quantity);
+            }
+            //Ancien code
+            //return 0.0;
+            return total;
         }
 
         /// <summary>
@@ -51,7 +87,18 @@ namespace P2FixAnAppDotNetCode.Models
         public double GetAverageValue()
         {
             // TODO implement the method
-            return 0.0;
+
+            double average = 0.00;
+            if (_cardLines.Count > 0)
+            {
+                int quantity = 0;
+                foreach (CartLine line in _cardLines)
+                {
+                    quantity += line.Quantity;
+                }
+                average = GetTotalValue() / quantity;
+            }
+            return average;
         }
 
         /// <summary>
@@ -60,7 +107,16 @@ namespace P2FixAnAppDotNetCode.Models
         public Product FindProductInCartLines(int productId)
         {
             // TODO implement the method
+            foreach (CartLine line in _cardLines)
+            {
+                if(line.Product.Id == productId)
+                {
+                    return line.Product;
+                }
+                
+            }
             return null;
+                
         }
 
         /// <summary>
