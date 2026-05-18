@@ -38,6 +38,7 @@ namespace P2FixAnAppDotNetCode
                 .AddViewLocalization(
                     LanguageViewLocationExpanderFormat.Suffix,
                     opts => { opts.ResourcesPath = "Resources"; })
+                //.AddDataAnnotationsLocalization();
                 .AddDataAnnotationsLocalization();
 
             services.Configure<RequestLocalizationOptions>(opts =>

@@ -147,4 +147,7 @@
   <data name="Average" xml:space="preserve">
     <value>Media</value>
   </data>
+  <data name="Items" xml:space="preserve">
+    <value>producto(s)</value>
+  </data>
 </root>
